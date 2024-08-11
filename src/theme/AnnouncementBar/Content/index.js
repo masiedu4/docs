@@ -14,6 +14,7 @@ export default function AnnouncementBarContent(props) {
   const [dynamicContent, setDynamicContent] = useState(content);
   const [balanceLoaded, setBalanceLoaded] = useState(false);
 
+  // https://eth-mainnet.g.alchemy.com/v2/cBxzBgf91hVaZIV-gnC0kuc-K1WGd2xX
   const formatLargeNumber = (num) => {
     const absNum = Math.abs(num);
     if (absNum >= 1000000) {
@@ -28,7 +29,7 @@ export default function AnnouncementBarContent(props) {
   // Fetch data for variables in the content
   const getBalance = async () => {
     const provider = new JsonRpcProvider(
-      "https://eth-mainnet.g.alchemy.com/v2/cBxzBgf91hVaZIV-gnC0kuc-K1WGd2xX"
+      "https://cloudflare-eth.com"
     );
     const contract = new Contract(
       wagmiContract.address,
