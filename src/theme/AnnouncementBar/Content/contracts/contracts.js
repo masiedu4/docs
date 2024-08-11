@@ -1,5 +1,5 @@
 export const wagmiContract = {
-	address: "0x491604c0FDF08347Dd1fa4Ee062a822A5DD06B5D" as `0x${string}`,
+	address: "0x491604c0FDF08347Dd1fa4Ee062a822A5DD06B5D",
 	abi: [
 	  {
 	    inputs: [
@@ -288,4 +288,4 @@ export const wagmiContract = {
 	    type: "function",
 	  },
 	],
-      } as const;
+      } ;
