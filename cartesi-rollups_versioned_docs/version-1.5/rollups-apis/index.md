@@ -10,41 +10,37 @@ resources:
     title: Smart Contracts for Cartesi Rollups
 ---
 
-In a Cartesi dApp, the frontend and backend components communicate through the Rollups framework using HTTP and GraphQL APIs.
+In the Cartesi architecture, the frontend and backend components of a dApp communicate through the Cartesi Rollups framework using HTTP and GraphQL APIs. 
 
-When designing the APIs for this communication with the framework, we wanted to ensure developers could create their applications without worrying too much about the low-level components of Cartesi Rollups. 
+These APIs are designed to abstract away the low-level details of Cartesi Rollups, allowing developers to focus on building their applications.
 
 ## Backend APIs
 
-In a typical Cartesi dApp, the backend contains the application's state and verifiable logic. The backend runs inside the Cartesi Machine as a regular Linux application. 
+The dApp's backend runs inside the Cartesi Machine as a standard Linux application and interacts with the Cartesi Rollups framework by retrieving requests as inputs and producing corresponding outputs via HTTP endpoints.
 
-The dApp's backend interacts with the Cartesi Rollups framework by retrieving processing requests and submitting corresponding outputs.
+There are two main types of requests the backend can handle:
 
-This is accomplished by calling a set of HTTP endpoints, as illustrated by the figure below:
+
+- **Advance requests** change the dApp's state based on the input data and generate verifiable notices, vouchers, and non-verifiable reports. 
+
+- **Inspect requests** allow reading the dApp's state without modifying it. For inspect requests, the backend sends the request directly to the Cartesi Node via an HTTP API call and receives a non-verifiable report in response.
+
 
 ![img](../../../static/img/v1.3/backend.jpg)
 
-You can send two requests to an application depending on whether you want to change or read the state.
-
-- **Advance**: In this request, any input data changes the state of the dApp.
-
-- **Inspect**: This involves making an external HTTP API call to the Cartesi Node to read the dApp state without changing it.
 
 
 ## Frontend APIs
 
-The frontend component of the dApp needs to access the Cartesi Rollups framework to submit user requests and retrieve the corresponding outputs produced by the backend.
+The dApp's frontend interacts with the Cartesi Rollups framework to submit user requests and retrieve the corresponding outputs produced by the backend. Some key interactions include:
 
-The figure below details some of the main use cases for these interactions:
+* Send inputs: The frontend sends input data to the backend through base layer smart contracts like the InputBox, using JSON-RPC transactions. Upon receiving the inputs, the backend processes them and generates outputs such as notices, vouchers, and reports.
+
+* Query outputs: The frontend can submit queries to a Cartesi node to retrieve the notices, vouchers, and reports, as specified by the Cartesi Rollups GraphQL schema.
+
+* Validate outputs: The frontend can submit JSON-RPC blockchain transactions to request the validation and execution of specific verifiable outputs, such as notices or vouchers, by the relevant smart contracts on the base layer.
+
+
+* Inspect state: The frontend can make HTTP calls to the Cartesi node to retrieve arbitrary dApp-specific application state.
 
 ![img](../../../static/img/v1.3/frontend.jpg)
-
-- [`addInput()`](./json-rpc/input-box.md/#addinput) — This function submits input data to the InputBox smart contract on the base layer as a regular JSON-RPC blockchain transaction. When that transaction is mined and executed, an event containing the submitted input’s index is emitted, which the frontend can later use to query associated outputs.
-
-- [`executeVoucher()`](./json-rpc/application.md/#executevoucher) — Submits a JSON-RPC blockchain transaction to request that a given voucher or notice be executed by the [`CartesiDApp`](./json-rpc/application.md) smart contract on the base layer. Vouchers can only be executed when an epoch is closed.
-
-- Query outputs — You can submit a query to a Cartesi node to retrieve vouchers, notices, and reports, as specified by the Cartesi Rollups GraphQL schema.
-
-- Inspect state — You can make an HTTP call to the Cartesi node to retrieve arbitrary dApp-specific application state.
-
-
