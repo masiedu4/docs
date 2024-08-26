@@ -195,7 +195,7 @@ while True:
 
 ## Handling Advance and Inspect Requests
 
-Your backend code should continuously listen for new requests using the /finish endpoint. When a request is received, the appropriate handler (Advance or Inspect) is invoked based on the request type. 
+Your backend code should continuously listen for new requests using the `/finish` endpoint. When a request is received, the appropriate handler (Advance or Inspect) is invoked based on the request type. 
 
 Here is a complete boilerplate application that handles both advance and inspect requests:
 

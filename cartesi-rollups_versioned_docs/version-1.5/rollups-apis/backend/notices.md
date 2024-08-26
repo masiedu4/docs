@@ -3,21 +3,18 @@ id: notices
 title: Notices
 
 ---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-A notice is a verifiable data declaration that attests to off-chain events or conditions and is accompanied by proof.
+A notice is a verifiable data declaration that attests to off-chain event and is accompanied by proof. 
 
 Notices provide a mechanism to communicate essential off-chain events in the execution layer to the base layer in a verifiable manner.
 
-Consider a scenario within a gaming dApp where players engage in battles. Upon the conclusion of a match, the dApp's backend generates a notice proclaiming the victorious player. This notice contains pertinent off-chain data regarding the match outcome. Once created, the notice is submitted to the rollup server as evidence of the off-chain event.
+For example, in a gaming dApp where players engage in battles, the dApp's backend could generate a notice declaring the victorious player after a match. This notice, containing pertinent off-chain data about the match outcome, is then submitted to the rollup server as evidence of the off-chain event.
 
-Crucially, the base layer conducts on-chain validation of these notices through the [`validateNotice()`](../json-rpc/application.md/#validatenotice) function of the `CartesiDApp` contract.
+## Create a notice
 
-This validation process ensures the integrity and authenticity of the submitted notices, enabling the blockchain to verify and authenticate the declared off-chain events or conditions.
-
-Let's see how a Cartesi dApp's **Advance** request sends an output to the rollup server as a notice:
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+To create a notice, the `Advance` handler sends an output to the rollup server via the `/notice` endpoint:
 
 <Tabs>
   <TabItem value="JavaScript" label="JavaScript" default>
@@ -77,6 +74,39 @@ def handle_advance(data):
 
 </Tabs>
 
-:::note querying notices
-Frontend clients can query notices using a GraphQL API exposed by the Cartesi Nodes. [Refer to the documentation here](../../development/retrieve-outputs.md/#query-all-reports) to query notices from the rollup server.
-:::
+
+## Query notices
+
+Frontend clients can query notices using a GraphQL API exposed by the Cartesi Node. To all query notices, you can use the following GraphQL query:
+
+```graphql
+query notices {
+  notices {
+    edges {
+      node {
+        index
+        input {
+          index
+          timestamp
+          msgSender
+          blockNumber
+        }
+        payload
+      }
+    }
+  }
+}
+```
+
+Refer to the complete [GraphQL reference for querying notices](../graphql/queries/notices.md) using different filters.
+
+
+## Validate a notice
+
+Crucially, the base layer conducts on-chain validation of these notices through the [`validateNotice()`](../json-rpc/application.md/#validatenotice) function of the `CartesiDApp` contract.
+
+This validation process ensures the integrity and authenticity of the submitted notices, enabling the blockchain to verify and authenticate the declared off-chain events.
+
+
+
+
